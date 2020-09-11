@@ -3,11 +3,15 @@ package com.example.gads
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
+import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
 import com.example.gads.Apis.RetrofitClient
 import com.example.gads.Model.DefaultSubmitResponse
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_submit.*
+import kotlinx.android.synthetic.main.success_toast.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,6 +21,9 @@ class SubmitActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_submit)
+
+
+        val layout = layoutInflater.inflate(R.layout.success_toast, linearLayout_toast)
 
 
 
@@ -58,10 +65,17 @@ class SubmitActivity : AppCompatActivity() {
                 }
 
                 override fun onResponse(
+
                     p0: Call<DefaultSubmitResponse>?,
                     p1: Response<DefaultSubmitResponse>?
                 ) {
-                    Toast.makeText(applicationContext, p1?.body()?.Message,Toast.LENGTH_LONG).show()
+                    Toast(this@SubmitActivity).apply {
+                        duration= Toast.LENGTH_SHORT
+                        setGravity(Gravity.BOTTOM,0,0)
+                        view= layout
+                        show()
+
+                    }
 
                 }
 
