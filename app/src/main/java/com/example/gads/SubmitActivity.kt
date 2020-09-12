@@ -11,6 +11,7 @@ import com.example.gads.Apis.RetrofitClient
 import com.example.gads.Model.DefaultSubmitResponse
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_submit.*
+import kotlinx.android.synthetic.main.submiterror_toast.*
 import kotlinx.android.synthetic.main.success_toast.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,7 +24,8 @@ class SubmitActivity : AppCompatActivity() {
         setContentView(R.layout.activity_submit)
 
 
-        val layout = layoutInflater.inflate(R.layout.success_toast, linearLayout_toast)
+        val layoutresponse = layoutInflater.inflate(R.layout.success_toast, linearLayout_toastsuccess)
+        val layouterror = layoutInflater.inflate(R.layout.submiterror_toast, linearLayout_toasterror)
 
 
 
@@ -61,7 +63,12 @@ class SubmitActivity : AppCompatActivity() {
                 email, firstname, lastname, gitproject
             ).enqueue(object : Callback<DefaultSubmitResponse>{
                 override fun onFailure(p0: Call<DefaultSubmitResponse>?, p1: Throwable?) {
-                    Toast.makeText(applicationContext, p1?.message,Toast.LENGTH_LONG).show()
+                    Toast(this@SubmitActivity).apply {
+                        duration = Toast.LENGTH_SHORT
+                        setGravity(Gravity.BOTTOM, 0, 0)
+                        view = layouterror
+                        show()
+                    }
                 }
 
                 override fun onResponse(
@@ -72,7 +79,7 @@ class SubmitActivity : AppCompatActivity() {
                     Toast(this@SubmitActivity).apply {
                         duration= Toast.LENGTH_SHORT
                         setGravity(Gravity.BOTTOM,0,0)
-                        view= layout
+                        view= layoutresponse
                         show()
 
                     }
